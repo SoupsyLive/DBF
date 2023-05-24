@@ -27,7 +27,7 @@ public class KeyInputHandler {
             if(boostingEnergyKey.wasPressed()){
                 if(!keyDebounce && !ignoreInputs){
                     //client.player.sendMessage(Text.literal("BOOST"));
-                    ClientPlayNetworking.send(ModPackets.BOOSTING_ENERGY_ID, PacketByteBufs.create());
+                    ClientPlayNetworking.send(ModPackets.BOOSTING_POWER_ID, PacketByteBufs.create());
                     keyDebounce = true;
                     for(int i=0; i<100;i++){
                         if(i==100-1){

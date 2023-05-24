@@ -1,8 +1,12 @@
 package net.soupsy.dbfabric;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.soupsy.dbfabric.event.DeathEvents;
 import net.soupsy.dbfabric.event.PlayerTickHandler;
+import net.soupsy.dbfabric.event.RespawnEnergyHandler;
 import net.soupsy.dbfabric.networking.ModPackets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,5 +20,7 @@ public class DragonBallFabric implements ModInitializer {
 		ModPackets.registerC2SPackets();
 		//LOGGER.info("Hello Fabric world!");
 		ServerTickEvents.START_SERVER_TICK.register(new PlayerTickHandler());
+		ServerLivingEntityEvents.ALLOW_DEATH.register(new DeathEvents());
+		ServerPlayerEvents.AFTER_RESPAWN.register(new RespawnEnergyHandler());
 	}
 }

@@ -10,6 +10,6 @@ public class EnergySyncDataS2CPacket {
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
         //When the server gets this packet do this :
-        ((IEntityDataSaver) client.player).getPersistentData().putInt("power", buf.readInt());
+        ((IEntityDataSaver) client.player).getPersistentData().putInt("energy", buf.readInt());
     }
 }

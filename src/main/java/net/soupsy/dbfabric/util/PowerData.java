@@ -12,15 +12,10 @@ public class PowerData {
         NbtCompound nbt = player.getPersistentData();
         if(!nbt.getBoolean("drainpower")){
             int power = nbt.getInt("power");
-            if(power+amount <= 20){
-                power += amount;
-            }else{
-                power = 20;
-            }
+            power += amount;
             nbt.putInt("power", power);
 
             // sync data
-            syncPower(power, (ServerPlayerEntity) player);
             return power;
         }
 
@@ -37,17 +32,10 @@ public class PowerData {
         }
 
         nbt.putInt("power", power);
-        // sync data
-        syncPower(power, (ServerPlayerEntity) player);
         return power;
     }
     public static int getPower(IEntityDataSaver player){
         return player.getPersistentData().getInt("power");
-    }
-    public static void syncPower(int power, ServerPlayerEntity player){
-        PacketByteBuf buffer = PacketByteBufs.create();
-        buffer.writeInt(power);
-        ServerPlayNetworking.send(player, ModPackets.ENERGY_SYNC_ID, buffer);
     }
 
 

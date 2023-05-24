@@ -39,7 +39,7 @@ public class EnergyHudOverlay implements HudRenderCallback {
         }
         RenderSystem.setShaderTexture(0, FULL_ENERGY);
 
-        int meter = (((IEntityDataSaver) MinecraftClient.getInstance().player).getPersistentData().getInt("power"));
+        int meter = (((IEntityDataSaver) MinecraftClient.getInstance().player).getPersistentData().getInt("energy"));
 
         for(int i = 0; i<10;i++){
             if(meter/2 > i){
