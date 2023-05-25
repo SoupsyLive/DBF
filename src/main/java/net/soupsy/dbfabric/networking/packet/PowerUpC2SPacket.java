@@ -10,13 +10,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.BlockPos;
+import net.soupsy.dbfabric.util.EnergyData;
 import net.soupsy.dbfabric.util.IEntityDataSaver;
 import net.soupsy.dbfabric.util.PlayerStorage;
-import net.soupsy.dbfabric.util.PowerData;
 
 public class PowerUpC2SPacket {
 
@@ -24,6 +20,12 @@ public class PowerUpC2SPacket {
                                PacketByteBuf buf, PacketSender responseSender) {
         PlayerStorage.togglePowerup(player.getUuid());
         if(PlayerStorage.isPowerupActive("Powered-Players", player.getUuid())){
+            IEntityDataSaver playerData = (IEntityDataSaver) player;
+            EnergyData.removeEnergy(playerData, 7);
+            if(EnergyData.getEnergy(playerData) < 2){
+                player.kill();
+                PlayerStorage.togglePowerup(player.getUuid());
+            }
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, -1, 1, true, false));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, -1, 4, true, false));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, -1, 2, true, false));
