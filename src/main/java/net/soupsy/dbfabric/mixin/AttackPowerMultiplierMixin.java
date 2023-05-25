@@ -19,13 +19,15 @@ public abstract class AttackPowerMultiplierMixin extends Entity {
     }
 
     @ModifyVariable(method = "attack", at = @At("HEAD"), argsOnly = false)
-    public PlayerEntity multiplyDamage(PlayerEntity player) {
+    public PlayerEntity multiplyDamage(PlayerEntity target) {
 
-        IEntityDataSaver dataPlayer = (IEntityDataSaver) player;
+        // get NBT data of person
+        IEntityDataSaver dataPlayer = (IEntityDataSaver) this;
         int power = PowerData.getPower(dataPlayer);
 
+        // apply modifier to variable f, still working on that.
 
-        return player;
+        return target;
     }
 
 
