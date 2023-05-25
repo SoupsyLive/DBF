@@ -6,7 +6,8 @@
   "mixins": [
     "ModEntityDataSaverMixin",
     "DamageCalculatorMixin",
-    "GuysClassThang"
+    "GuysClassThang",
+    "AttackPowerMultiplierMixin"
   ],
   "client": [
     "DragonBallFabricMixin"
