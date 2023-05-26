@@ -13,6 +13,7 @@ import net.minecraft.sound.SoundEvents;
 import net.soupsy.dbfabric.util.EnergyData;
 import net.soupsy.dbfabric.util.IEntityDataSaver;
 import net.soupsy.dbfabric.util.PlayerStorage;
+import net.soupsy.dbfabric.util.PowerData;
 
 public class PowerUpC2SPacket {
 
@@ -26,18 +27,17 @@ public class PowerUpC2SPacket {
                 player.kill();
                 PlayerStorage.togglePowerup(player.getUuid());
             }
+            PowerData.addPower(playerData, PowerData.getPower(playerData));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, -1, 1, true, false));
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, -1, 4, true, false));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, -1, 2, true, false));
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, -1, 2, true, false));
             ServerWorld world = player.getWorld();
             world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_PARROT_IMITATE_ENDER_DRAGON, SoundCategory.PLAYERS,
                     0.4F, world.random.nextFloat() * 0.1F + 0.9F);
         }else{
+            IEntityDataSaver playerData = (IEntityDataSaver) player;
+            PowerData.removePower(playerData, (PowerData.getPower(playerData)/2));
             player.removeStatusEffect(StatusEffects.GLOWING);
-            player.removeStatusEffect(StatusEffects.STRENGTH);
             player.removeStatusEffect(StatusEffects.SPEED);
-            player.removeStatusEffect(StatusEffects.RESISTANCE);
 
             ServerWorld world = player.getWorld();
             world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_FLAP, SoundCategory.PLAYERS,
