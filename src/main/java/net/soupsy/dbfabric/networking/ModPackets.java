@@ -14,6 +14,8 @@ public class ModPackets {
     public static final Identifier USE_ENERGY_ID = new Identifier(DragonBallFabric.MOD_ID, "spend-energy");
     public static final Identifier POWER_UP_ID = new Identifier(DragonBallFabric.MOD_ID, "power-up");
 
+    public static final Identifier POWER_UP_SYNC_ID = new Identifier(DragonBallFabric.MOD_ID, "power-up-sync");
+
     public static final Identifier EXAMPLE_ID = new Identifier(DragonBallFabric.MOD_ID, "example");
 
 
@@ -26,6 +28,8 @@ public class ModPackets {
     }
     public static void registerS2CPackets() {
         ClientPlayNetworking.registerGlobalReceiver(ENERGY_SYNC_ID, EnergySyncDataS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(POWER_UP_SYNC_ID, PowerupSyncDataS2CPacket::receive);
+
     }
 
 

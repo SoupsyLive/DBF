@@ -12,10 +12,10 @@ public class EnergyData {
         NbtCompound nbt = player.getPersistentData();
         if(!nbt.getBoolean("drainpower")){
             int energy = nbt.getInt("energy");
-            if(energy+amount <= 20){
+            if(energy+amount <= 100){
                 energy += amount;
             }else{
-                energy = 20;
+                energy = 100;
             }
             nbt.putInt("energy", energy);
 
@@ -30,10 +30,10 @@ public class EnergyData {
     public static int removeEnergy(IEntityDataSaver player, int amount) {
         NbtCompound nbt = player.getPersistentData();
         int energy = nbt.getInt("energy");
-        if(energy-amount > 1){
+        if(energy-amount > 0){
             energy -= amount;
         }else{
-            energy = 1;
+            energy = 0;
         }
 
         nbt.putInt("energy", energy);

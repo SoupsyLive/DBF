@@ -1,6 +1,8 @@
 package net.soupsy.dbfabric.networking.packet;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.PacketByteBuf;
@@ -10,6 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.soupsy.dbfabric.networking.ModPackets;
 import net.soupsy.dbfabric.util.EnergyData;
 import net.soupsy.dbfabric.util.IEntityDataSaver;
 import net.soupsy.dbfabric.util.PlayerStorage;
@@ -21,9 +24,15 @@ public class PowerUpC2SPacket {
                                PacketByteBuf buf, PacketSender responseSender) {
         PlayerStorage.togglePowerup(player.getUuid());
         if(PlayerStorage.isPowerupActive("Powered-Players", player.getUuid())){
+
+            PacketByteBuf buffer = PacketByteBufs.create();
+            buffer.writeBoolean(true);
+            ServerPlayNetworking.send(player, ModPackets.POWER_UP_SYNC_ID, buffer);
+
+
             IEntityDataSaver playerData = (IEntityDataSaver) player;
-            EnergyData.removeEnergy(playerData, 7);
-            if(EnergyData.getEnergy(playerData) < 2){
+            EnergyData.removeEnergy(playerData, 33);
+            if(EnergyData.getEnergy(playerData) < 5){
                 player.kill();
                 PlayerStorage.togglePowerup(player.getUuid());
             }
@@ -35,6 +44,11 @@ public class PowerUpC2SPacket {
                     0.4F, world.random.nextFloat() * 0.1F + 0.9F);
         }else{
             IEntityDataSaver playerData = (IEntityDataSaver) player;
+
+            PacketByteBuf buffer = PacketByteBufs.create();
+            buffer.writeBoolean(false);
+            ServerPlayNetworking.send(player, ModPackets.POWER_UP_SYNC_ID, buffer);
+
             PowerData.removePower(playerData, (PowerData.getPower(playerData)/2));
             player.removeStatusEffect(StatusEffects.GLOWING);
             player.removeStatusEffect(StatusEffects.SPEED);

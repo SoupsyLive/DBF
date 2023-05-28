@@ -23,10 +23,10 @@ public class UseEnergyC2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
         //if(((IEntityDataSaver) MinecraftClient.getInstance().player).getPersistentData().getInt("power") > 2){
-        if(((IEntityDataSaver) player).getPersistentData().getInt("energy") > 2){
+        if(((IEntityDataSaver) player).getPersistentData().getInt("energy") > 7){
 
 
-            int energyChange = 2;
+            int energyChange = 7;
             ServerWorld world = player.getWorld();
             //When the server gets this packet do this :
             BlockPos playerPos = player.getBlockPos().add(0, 1, 0);
