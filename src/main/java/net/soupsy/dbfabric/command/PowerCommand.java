@@ -1,43 +1,50 @@
 package net.soupsy.dbfabric.command;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.BlockPos;
 import net.soupsy.dbfabric.util.ArgNumbCheckUtil;
 import net.soupsy.dbfabric.util.IEntityDataSaver;
 import net.soupsy.dbfabric.util.PowerData;
 
-import static com.mojang.brigadier.arguments.StringArgumentType.getString;
-import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
-import static com.mojang.brigadier.builder.RequiredArgumentBuilder.argument;
+import java.text.DecimalFormat;
 
 public class PowerCommand {
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        dispatcher.register(CommandManager.literal("power")
-                        .requires(source -> source.hasPermissionLevel(2))
-                        .then(argument("power", greedyString()))
-                        .executes(ctx -> run(ctx.getSource(), getString(ctx, "power"))));
-                //.then(CommandManager.literal("set").executes(PowerCommand::run)));
+    public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandRegistryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
+        dispatcher.register(CommandManager.literal("power").requires(source -> source.hasPermissionLevel(2))
+                .then(CommandManager.argument("new power", StringArgumentType.word())
+                                .suggests((context, builder) -> {
+                                    builder.suggest("1");
+                                    return builder.buildFuture();
+                                })
+                                        .executes(PowerCommand::run)
+                                )
+
+
+        );
     }
 
-    public static int run(ServerCommandSource context, String power){
-        //final ServerCommandSource source = context.
-        IEntityDataSaver player = (IEntityDataSaver)context;
+    private static int run(CommandContext<ServerCommandSource> context) {
+        String newPower = StringArgumentType.getString(context, "new power");
+        IEntityDataSaver player = (IEntityDataSaver) context.getSource().getPlayer();
         int oldPower = PowerData.getPower(player);
+        if(ArgNumbCheckUtil.isInt(newPower)){
+            int newPowerInt = Integer.parseInt(newPower);
+            PowerData.setPower(player, newPowerInt);
 
-        if(ArgNumbCheckUtil.isInt(power)){
-            int intPower = Integer.parseInt(power);
+            DecimalFormat df = new DecimalFormat("#,###");
+            String oldPowerCommas = df.format(oldPower);
+            String newPowerCommas = df.format(newPowerInt);
 
-            PowerData.setPower(player, intPower);
-            context.sendFeedback(Text.literal((context.getDisplayName()+": "+ oldPower+" -> "+intPower+" power.")).fillStyle(Style.EMPTY.withColor(Formatting.GOLD).withBold(true)), true);
+            context.getSource().sendFeedback(Text.literal("§ePower: §c§l"+oldPowerCommas+"§r§f -> §a§l"+newPowerCommas+"§r§e."), true);
+            return 1;
+        }else{
+            context.getSource().sendFeedback(Text.literal("§c/power <number>"), false);
             return 1;
         }
-
-        return 0;
     }
 }

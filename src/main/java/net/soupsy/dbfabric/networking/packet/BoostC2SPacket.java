@@ -19,8 +19,9 @@ public class BoostC2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
 
-        int powerChange = 2;
+        int powerChange = 10;
         ServerWorld world = player.getWorld();
+
         //When the server gets this packet do this :
         world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.PLAYERS,
                 0.1F, world.random.nextFloat() * 0.1F + 0.9F);
@@ -29,7 +30,7 @@ public class BoostC2SPacket {
         PowerData.addPower(((IEntityDataSaver) player), powerChange);
 
         // output new power level
-        player.sendMessage(Text.literal(""+((IEntityDataSaver) player).getPersistentData().getInt("power"))
+        player.sendMessage(Text.literal(""+((IEntityDataSaver) player).getPersistentData().getInt("energy"))
                 .fillStyle(Style.EMPTY.withColor(Formatting.GOLD).withBold(true)), true);
     }
 }

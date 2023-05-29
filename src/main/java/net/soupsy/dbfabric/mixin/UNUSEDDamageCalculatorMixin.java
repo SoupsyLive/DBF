@@ -6,7 +6,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.soupsy.dbfabric.util.IEntityDataSaver;
-import net.soupsy.dbfabric.util.PleaseJustWork;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public abstract class UNUSEDDamageCalculatorMixin implements PleaseJustWork {
+public abstract class UNUSEDDamageCalculatorMixin{
     @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     @Inject(method = "modifyAppliedDamage", at = @At("HEAD"))

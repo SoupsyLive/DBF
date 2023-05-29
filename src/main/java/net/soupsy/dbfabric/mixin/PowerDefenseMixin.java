@@ -27,12 +27,7 @@ public abstract class PowerDefenseMixin extends Entity {
         float power = dataPlayer.getPersistentData().getInt("power");
 
         // calc the damage reduction and apply it to arg
-        amount -= PowerCalculator.calcPowerDefense(power);
-
-        // can't have negative dmg
-        if(amount < 0){
-            amount = 0;
-        }
+        amount = PowerCalculator.calcPowerDefense(amount, power);
 
         // return damage
         return amount;
