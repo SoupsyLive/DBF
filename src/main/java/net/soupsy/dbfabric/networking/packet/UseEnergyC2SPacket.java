@@ -4,6 +4,8 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -15,6 +17,7 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
+import net.soupsy.dbfabric.playerStorage.PlayerStatsStorage;
 import net.soupsy.dbfabric.util.EnergyData;
 import net.soupsy.dbfabric.util.IEntityDataSaver;
 import net.soupsy.dbfabric.util.PowerData;
@@ -27,11 +30,11 @@ public class UseEnergyC2SPacket {
 
         if(((IEntityDataSaver) player).getPersistentData().getInt("energy") > energyChange){
             // player pos
-            ServerWorld world = player.getWorld();
+            ServerWorld world = (ServerWorld) player.getWorld();
             BlockPos playerPos = player.getBlockPos().add(0, 1, 0);
 
             // summon fireball, no NBT
-            EntityType.FIREBALL.spawn((ServerWorld) player.world, playerPos, SpawnReason.TRIGGERED);
+            EntityType.FIREBALL.spawn((ServerWorld) player.getWorld(), playerPos, SpawnReason.TRIGGERED);
             world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_HURT, SoundCategory.PLAYERS,
                     0.4F, world.random.nextFloat() * 0.1F + 0.9F);
 

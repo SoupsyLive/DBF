@@ -1,7 +1,5 @@
 package net.soupsy.dbfabric.item.custom;
 
-import it.unimi.dsi.fastutil.ints.IntImmutableList;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -13,6 +11,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.soupsy.dbfabric.playerStorage.PlayerStatsStorage;
+import net.soupsy.dbfabric.playerStorage.Race;
 
 public class RaceSelectorItem extends Item {
     public RaceSelectorItem(Settings settings) {
@@ -23,7 +23,7 @@ public class RaceSelectorItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         if(!world.isClient() && (hand == Hand.MAIN_HAND || hand == Hand.OFF_HAND)){
-            outputRandomNumber(user);
+            selectRandomRace(user);
             user.getItemCooldownManager().set(this, 20);
         }
         user.incrementStat(Stats.USED.getOrCreateStat(this));
@@ -38,7 +38,7 @@ public class RaceSelectorItem extends Item {
         ItemStack itemStack = user.getStackInHand(hand);
         if(hand == Hand.MAIN_HAND || hand == Hand.OFF_HAND){
             //if(entity.is)
-            outputRandomNumber(user);
+            selectRandomRace(user);
             user.getItemCooldownManager().set(this, 20);
         }
 
@@ -49,8 +49,40 @@ public class RaceSelectorItem extends Item {
         return super.useOnEntity(stack, user, entity, hand);
     }
 
-    private void outputRandomNumber(PlayerEntity player){
-        player.sendMessage(Text.literal("Chosen Race #"+getRandomNumber(9)));
+    private void selectRandomRace(PlayerEntity player){
+        int rand = getRandomNumber(6);
+        switch (rand){
+            case 0:
+                PlayerStatsStorage.setRace(player.getUuid(), Race.HUMAN);
+                player.sendMessage(Text.literal("You obtained the §a"+Race.HUMAN.getName()+"§r race."));
+                break;
+            case 1:
+                PlayerStatsStorage.setRace(player.getUuid(), Race.SAIYAN);
+                player.sendMessage(Text.literal("You obtained the §a"+Race.SAIYAN.getName()+"§r race."));
+                break;
+            case 2:
+                PlayerStatsStorage.setRace(player.getUuid(), Race.HALFSAIYAN);
+                player.sendMessage(Text.literal("You obtained the §a"+Race.HALFSAIYAN.getName()+"§r race."));
+                break;
+            case 3:
+                PlayerStatsStorage.setRace(player.getUuid(), Race.NAMEKIAN);
+                player.sendMessage(Text.literal("You obtained the §a"+Race.NAMEKIAN.getName()+"§r race."));
+                break;
+            case 4:
+                PlayerStatsStorage.setRace(player.getUuid(), Race.FREIZA);
+                player.sendMessage(Text.literal("You obtained the §a"+Race.FREIZA.getName()+"§r race."));
+                break;
+            case 5:
+                PlayerStatsStorage.setRace(player.getUuid(), Race.ANDROID);
+                player.sendMessage(Text.literal("You obtained the §a"+Race.ANDROID.getName()+"§r race."));
+                break;
+            case 6:
+                PlayerStatsStorage.setRace(player.getUuid(), Race.MAJIN);
+                player.sendMessage(Text.literal("You obtained the §a"+Race.MAJIN.getName()+"§r race."));
+                break;
+
+        }
+
     }
     private int getRandomNumber(Integer max) {
         return Random.createLocal().nextInt(max+1);

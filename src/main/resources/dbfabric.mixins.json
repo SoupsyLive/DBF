@@ -9,7 +9,9 @@
     "PowerAttackMixin"
   ],
   "client": [
-    "DragonBallFabricMixin"
+    "DragonBallFabricMixin",
+    "ClientPlayerEntityMixin",
+    "PlayerAnimationExample"
   ],
   "injectors": {
     "defaultRequire": 1

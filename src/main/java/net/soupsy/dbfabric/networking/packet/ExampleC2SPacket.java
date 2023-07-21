@@ -13,6 +13,6 @@ public class ExampleC2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler,
                                 PacketByteBuf buf, PacketSender responseSender) {
         //When the server gets this packet do this :
-        EntityType.COW.spawn((ServerWorld) player.world, player.getBlockPos(), SpawnReason.TRIGGERED);
+        EntityType.COW.spawn((ServerWorld) player.getWorld(), player.getBlockPos(), SpawnReason.TRIGGERED);
     }
 }

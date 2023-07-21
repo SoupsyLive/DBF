@@ -20,7 +20,8 @@ public class BoostC2SPacket {
                                PacketByteBuf buf, PacketSender responseSender) {
 
         int powerChange = 10;
-        ServerWorld world = player.getWorld();
+        ServerWorld world = (ServerWorld) player.getWorld();
+
 
         //When the server gets this packet do this :
         world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.PLAYERS,

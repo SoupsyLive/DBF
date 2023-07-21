@@ -1,6 +1,7 @@
 package net.soupsy.dbfabric.item;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -12,18 +13,17 @@ import net.soupsy.dbfabric.DragonBallFabric;
 import net.soupsy.dbfabric.item.custom.RaceSelectorItem;
 
 public class DbfItems {
-    //public static final Item ORIGIN_ALIGNER = registerItem("origin_aligner",
-   //         new Item(new Item.Settings()), (DbfItemGroups.DRAGON_BALL_FABRIC));
     public static final Item ORIGIN_ALIGNER = registerItem("origin_aligner",
-            new RaceSelectorItem(new Item.Settings().maxCount(1)), (DbfItemGroups.DRAGON_BALL_FABRIC));
+            new RaceSelectorItem(new Item.Settings().maxCount(16)));
+    public static final Item SENSU_BEAN = registerItem("sensu_bean",
+            new Item(new Item.Settings().maxCount(16).food(DbfFoodComponents.SENSU_BEAN)));
 
 
-    private static Item registerItem(String name, Item item, ItemGroup group) {
-        ItemGroupEvents.modifyEntriesEvent(group).register(entries -> entries.add(item));
+    private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, new Identifier(DragonBallFabric.MOD_ID, name), item);
-        //return Registry.register.
     }
     public static void registerModItems() {
         DragonBallFabric.LOGGER.debug("Registering "+DragonBallFabric.MOD_ID+" items.");
+        //ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(DbfItems::addItemsToDbTabItemGroup);
     }
 }

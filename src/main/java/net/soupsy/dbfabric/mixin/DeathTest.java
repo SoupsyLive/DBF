@@ -5,7 +5,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
@@ -17,26 +16,30 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public abstract class PowerDefenseMixin extends Entity{
-    @Shadow public abstract boolean damage(DamageSource source, float amount);
+public abstract class DeathTest extends Entity{
 
-    public PowerDefenseMixin(EntityType<?> type, World world) {
+
+    public DeathTest(EntityType<?> type, World world) {
         super(type, world);
     }
 
-    @ModifyVariable(method = "damage", at = @At("HEAD"), argsOnly = true)
-    public float reduceDamage(float amount) {
-        // get power NBT
-        IEntityDataSaver dataPlayer = ((IEntityDataSaver) this);
-        float power = dataPlayer.getPersistentData().getInt("power");
+    @Inject(method = "onDeath", at = @At("HEAD"))
+    protected void preventDeath(DamageSource damageSource, CallbackInfo ci){
+        if(damageSource.getSource() instanceof PlayerEntity){
+            PlayerEntity player = (PlayerEntity) damageSource.getSource();
+            if(!player.isDead() && !player.isRemoved()){
+                IEntityDataSaver dataPlayer = ((IEntityDataSaver) player);
+                boolean downed = dataPlayer.getPersistentData().getBoolean("downed");
+                if(!downed){
 
-        // calc the damage reduction and apply it to arg
-        amount = PowerCalculator.calcPowerDefense(amount, power);
+                }
+            }
+        }
 
-        // return damage
-        return amount;
+
     }
 }

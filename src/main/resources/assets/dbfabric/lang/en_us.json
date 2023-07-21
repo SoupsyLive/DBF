@@ -1,7 +1,10 @@
 {
   "item.dbfabric.origin_aligner": "Origin Aligner",
+  "item.dbfabric.sensu_bean": "Sensu Bean",
 
-  "itemGroup.dbfabric.dragon_ball_fabric": "Dragon Ball Fabric",
+  "block.dbfabric.dragon_ball_block": "Dragon Ball",
+
+  "itemgroup.dbf": "Dragon Ball Fabric",
 
   "key.catagory.dbfabric.dbfabric": "Dragonball Fabric",
   "key.dbfabric.boost_energy": "Boost Energy",
