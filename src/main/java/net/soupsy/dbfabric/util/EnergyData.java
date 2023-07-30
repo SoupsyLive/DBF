@@ -45,9 +45,12 @@ public class EnergyData {
         return player.getPersistentData().getInt("energy");
     }
     public static void syncEnergy(int energy, ServerPlayerEntity player){
-        PacketByteBuf buffer = PacketByteBufs.create();
-        buffer.writeInt(energy);
-        ServerPlayNetworking.send(player, ModPackets.ENERGY_SYNC_ID, buffer);
+        if(player != null){
+            PacketByteBuf buffer = PacketByteBufs.create();
+            buffer.writeInt(energy);
+            ServerPlayNetworking.send(player, ModPackets.ENERGY_SYNC_ID, buffer);
+        }
+
     }
 
 

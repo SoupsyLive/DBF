@@ -4,8 +4,11 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.soupsy.dbfabric.client.TestScreen;
 import net.soupsy.dbfabric.networking.ModPackets;
 import org.lwjgl.glfw.GLFW;
 
@@ -14,10 +17,13 @@ public class KeyInputHandler {
     public static final String KEY_BOOST_ENERGY = "key.dbfabric.boost_energy";
     public static final String KEY_USE_ENERGY = "key.dbfabric.use_energy";
     public static final String KEY_POWER_UP = "key.dbfabric.power_up";
+    public static final String KEY_TEST_SCREEN = "key.dbfabric.test_screen";
+
 
     public static KeyBinding boostingEnergyKey;
     public static KeyBinding useEnergyKey;
     public static KeyBinding powerUpKey;
+    public static KeyBinding testScreenKey;
     static boolean keyDebounce = false;
     static boolean ignoreInputs = false;
 
@@ -58,6 +64,19 @@ public class KeyInputHandler {
                     }
                 }
             }
+            if(testScreenKey.wasPressed()){
+                if(!keyDebounce && !ignoreInputs){
+                    keyDebounce = true;
+                    client.send(() -> client.setScreenAndRender(new TestScreen(client.currentScreen)));
+                    //ClientPlayNetworking.send(ModPackets.VIEW_SCREEN, PacketByteBufs.create());
+                    //client.setScreenAndRender(new TestScreen(client.currentScreen));
+                    for(int i=0; i<100;i++){
+                        if(i==100-1){
+                            keyDebounce = false;
+                        }
+                    }
+                }
+            }
 
         });
     }
@@ -81,6 +100,13 @@ public class KeyInputHandler {
                 GLFW.GLFW_KEY_G,
                 KEY_CATEGORY_DRAGONBALL_FABRIC
         ));
+        testScreenKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                KEY_TEST_SCREEN,
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_Z,
+                KEY_CATEGORY_DRAGONBALL_FABRIC
+        ));
+
 
         registerKeyInputs();
     }

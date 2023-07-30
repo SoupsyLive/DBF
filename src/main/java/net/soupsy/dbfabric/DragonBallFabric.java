@@ -33,6 +33,7 @@ public class DragonBallFabric implements ModInitializer {
 		ServerTickEvents.START_SERVER_TICK.register(new PlayerTickHandler());
 		ServerLivingEntityEvents.ALLOW_DEATH.register(new DeathEvents());
 		ServerPlayerEvents.COPY_FROM.register(new ModPlayerEventCopyFrom());
+		//ServerPlayerEvents.AFTER_RESPAWN.register(new RespawnEnergyHandler());
 
 		// commands
 		CommandRegistrationCallback.EVENT.register(PowerCommand::register);

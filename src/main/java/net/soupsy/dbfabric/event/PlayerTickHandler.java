@@ -25,13 +25,14 @@ public class PlayerTickHandler implements ServerTickEvents.StartTick {
         int tickNumb = server.getTicks();
         if(tickNumb % 10 == 0){
             for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                assert player != null;
                 if(!PlayerStorage.isPowerupActive("Powered-Players", player.getUuid())){
                     IEntityDataSaver dataPlayer = ((IEntityDataSaver) player);
-                    EnergyData.addEnergy(dataPlayer, 7);
+                    EnergyData.addEnergy(dataPlayer, 2);
                 }else{
                     IEntityDataSaver dataPlayer = ((IEntityDataSaver) player);
-                    if(EnergyData.getEnergy(dataPlayer) > 7){
-                        EnergyData.removeEnergy(dataPlayer, 7);
+                    if(EnergyData.getEnergy(dataPlayer) > 2){
+                        EnergyData.removeEnergy(dataPlayer, 2);
                     }else{
                         ClientPlayNetworking.send(ModPackets.POWER_UP_ID, PacketByteBufs.create());
                         player.damage(player.getDamageSources().playerAttack(player), 15.0f);

@@ -23,15 +23,17 @@ import java.util.*;
 public class PowerupCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandRegistryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
         dispatcher.register(CommandManager.literal("technique").requires(source -> source.hasPermissionLevel(2))
-                .then(CommandManager.argument("action", StringArgumentType.word())
-                                .suggests((context, builder) -> {
-                                    builder.suggest("select");
-                                    builder.suggest("unlock");
-                                    builder.suggest("remove");
-                                    return builder.buildFuture();
-                                })
-                                    .then(CommandManager.argument("item", StringArgumentType.word())
-                                        .suggests((context, builder) -> {
+                .then(CommandManager.argument("target",  EntityArgumentType.players())
+                    .then(CommandManager.argument("action", StringArgumentType.word())
+                            .suggests((context, builder) -> {
+                                builder.suggest("select");
+                                builder.suggest("unlock");
+                                builder.suggest("remove");
+                                return builder.buildFuture();
+                            })
+
+                            .then(CommandManager.argument("item", StringArgumentType.word())
+                                            .suggests((context, builder) -> {
                                             List<PowerUp> powerups = Arrays.asList(PowerUp.values());
                                             for(int i=0; i < powerups.size(); i++){
                                                 builder.suggest(powerups.get(i).getId());
@@ -39,12 +41,9 @@ public class PowerupCommand {
                                             builder.suggest("none");
                                             return builder.buildFuture();
                                         })
-                                                    .then(CommandManager.argument("target",  EntityArgumentType.players())
-                                                            .executes(PowerupCommand::run)
-                                    )
                                 .executes(PowerupCommand::run)
                                 )
-                ));
+                )));
     }
 
     private static int run(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {

@@ -9,5 +9,7 @@
   "key.catagory.dbfabric.dbfabric": "Dragonball Fabric",
   "key.dbfabric.boost_energy": "Boost Energy",
   "key.dbfabric.use_energy": "Use Energy",
-  "key.dbfabric.power_up": "Power Up"
+  "key.dbfabric.power_up": "Power Up",
+  "key.dbfabric.test_screen": "View Player Info"
+
 }

@@ -36,6 +36,7 @@ public class PowerData {
     public static int getPower(IEntityDataSaver player){
         return player.getPersistentData().getInt("power");
     }
+
     public static int setPower(IEntityDataSaver player, int power){
         NbtCompound nbt = player.getPersistentData();
         if(power < 1){
